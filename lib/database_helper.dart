@@ -91,7 +91,7 @@ class DatabaseHelper {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "konnect.db");
 
-    //await deleteDatabase(path); // just for testing
+    await deleteDatabase(path); // just for testing
 
     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
     return db;
