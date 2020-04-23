@@ -42,7 +42,7 @@ class SocketManager {
         {
           "action": "login",
           "params": {
-            "username": "overjt",
+            "username": "testing",
             "password": "testing",
           },
         },
