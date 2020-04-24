@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:konnect/screens/stats/stats_card.dart';
 import 'package:konnect/socket_manager.dart';
+import 'package:filesize/filesize.dart';
 
 class StatsScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
@@ -61,11 +62,12 @@ class _StatsScreenState extends State<StatsScreen> {
         },
         {
           "key": "Hilos",
-          "value": _getStatsDataKey("processorThreads"),
+          "value": _getStatsDataKey("processorThreads", ''),
         }
       ],
     );
 
+    double ramPercentage = _getStatsDataKey("ramUsedPercent",0) / 100; 
     StatsCardModel ramInfo = StatsCardModel(
         title: "Memoria RAM",
         icon: Icon(
@@ -75,20 +77,20 @@ class _StatsScreenState extends State<StatsScreen> {
         info: <Map>[
           {
             "key": "Número de procesos",
-            "value": _getStatsDataKey("nofprocess"),
+            "value": _getStatsDataKey("nofProcess"),
           },
           {
             "key": "Total",
-            "value": _getStatsDataKey("ramTotal"),
+            "value": filesize(_getStatsDataKey("ramTotal", 0)),
           },
           {
             "key": "Uso",
-            "value": _getStatsDataKey("ramUsed"),
+            "value": filesize(_getStatsDataKey("ramUsed",0)),
           },
         ],
         extraWidgets: <Widget>[
           LinearProgressIndicator(
-            value: _getStatsDataKey("ramUsedPercent"),
+            value: ramPercentage,
           )
         ]);
 
@@ -99,6 +101,7 @@ class _StatsScreenState extends State<StatsScreen> {
     var disks = _getStatsDataKey("disks");
     if (disks != null && disks.length > 0) {
       for (Map disk in disks) {
+        double diskPercent = disk["usedPercent"] != null ? disk["usedPercent"] / 100: 0;
         cards.add(StatsCardModel(
             title: "Disco " + disk["letter"],
             icon: Icon(
@@ -116,16 +119,16 @@ class _StatsScreenState extends State<StatsScreen> {
               },
               {
                 "key": "Total",
-                "value": disk["total"],
+                "value": filesize(disk["total"]),
               },
               {
                 "key": "Libre",
-                "value": disk["free"],
+                "value": filesize(disk["free"]),
               },
             ],
             extraWidgets: <Widget>[
               LinearProgressIndicator(
-                value:  disk["usedPercent"],
+                value:  diskPercent,
               )
             ]));
       }
@@ -178,11 +181,11 @@ class _StatsScreenState extends State<StatsScreen> {
     getData();
   }
 
-  _getStatsDataKey(String key) {
+  _getStatsDataKey(String key, [dynamic defaultOption]) {
     if (_statsData != null && _statsData.containsKey(key)) {
       return _statsData[key];
     } else {
-      return null;
+      return defaultOption;
     }
   }
 

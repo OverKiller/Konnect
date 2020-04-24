@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
     }else{
       //Tutorial and scan PC
 
-      Server s = Server("72.44.68.171", "3567", "testing", "testing", "55555");
+      Server s = Server("192.168.1.28", "3567", "testing", "testing", "55555");
       int id = await dbHelper.saveServer(s);
       await dbHelper.saveConfig("current_server", id.toString());
       await sockets.initCommunication(s);
