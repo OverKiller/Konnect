@@ -26,11 +26,11 @@ class _StatsScreenState extends State<StatsScreen> {
       info: <Map>[
         {
           "key": "Usuario",
-          "value": _getStatsDataKey("currentuser"),
+          "value": _getStatsDataKey("currentUser"),
         },
         {
           "key": "Máquina",
-          "value": _getStatsDataKey("machinename"),
+          "value": _getStatsDataKey("machineName"),
         },
         {
           "key": "Sistema Operativo",
@@ -49,28 +49,22 @@ class _StatsScreenState extends State<StatsScreen> {
       info: <Map>[
         {
           "key": "Procesador",
-          "value": _getStatsDataKey("processorname"),
+          "value": _getStatsDataKey("processorName"),
         },
         {
           "key": "Velocidad",
-          "value": _getStatsDataKey("processorclock"),
+          "value": _getStatsDataKey("processorClock"),
         },
         {
           "key": "Núcleos",
-          "value": _getStatsDataKey("processorcores"),
+          "value": _getStatsDataKey("processorCores"),
         },
         {
           "key": "Hilos",
-          "value": _getStatsDataKey("processorthreads"),
+          "value": _getStatsDataKey("processorThreads"),
         }
       ],
     );
-    var totalram = _getStatsDataKey("totalram");
-    var ramusage = _getStatsDataKey("ramusage");
-    double ramPercetange = 0.0;
-    if (totalram != null && ramusage != null) {
-      ramPercetange = ramusage / totalram;
-    }
 
     StatsCardModel ramInfo = StatsCardModel(
         title: "Memoria RAM",
@@ -85,16 +79,16 @@ class _StatsScreenState extends State<StatsScreen> {
           },
           {
             "key": "Total",
-            "value": _getStatsDataKey("totalram"),
+            "value": _getStatsDataKey("ramTotal"),
           },
           {
             "key": "Uso",
-            "value": _getStatsDataKey("ramusage"),
+            "value": _getStatsDataKey("ramUsed"),
           },
         ],
         extraWidgets: <Widget>[
           LinearProgressIndicator(
-            value: ramPercetange,
+            value: _getStatsDataKey("ramUsedPercent"),
           )
         ]);
 
@@ -105,7 +99,6 @@ class _StatsScreenState extends State<StatsScreen> {
     var disks = _getStatsDataKey("disks");
     if (disks != null && disks.length > 0) {
       for (Map disk in disks) {
-        double percetange = (disk["free"] / disk["totalsize"]);
         cards.add(StatsCardModel(
             title: "Disco " + disk["letter"],
             icon: Icon(
@@ -123,7 +116,7 @@ class _StatsScreenState extends State<StatsScreen> {
               },
               {
                 "key": "Total",
-                "value": disk["totalsize"],
+                "value": disk["total"],
               },
               {
                 "key": "Libre",
@@ -132,7 +125,7 @@ class _StatsScreenState extends State<StatsScreen> {
             ],
             extraWidgets: <Widget>[
               LinearProgressIndicator(
-                value: percetange,
+                value:  disk["usedPercent"],
               )
             ]));
       }
@@ -174,7 +167,6 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   getData() {
-    print("llama getData");
     Map data = {"action": _action};
     sockets.send(data);
   }

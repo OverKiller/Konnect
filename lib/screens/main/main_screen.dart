@@ -78,14 +78,12 @@ class _MainScreenState extends State<MainScreen> {
     if (currentServerId != null){
       Server currentServer = await dbHelper.getServer(int.parse(currentServerId));
       sockets.initCommunication(currentServer);
-      print("Cargó el server de la db");
     }else{
       //Tutorial and scan PC
 
       Server s = Server("72.44.68.171", "3567", "testing", "testing", "55555");
       int id = await dbHelper.saveServer(s);
       await dbHelper.saveConfig("current_server", id.toString());
-      print("Creó server en la db");
       await sockets.initCommunication(s);
     }
   }
