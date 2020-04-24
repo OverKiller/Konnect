@@ -15,6 +15,7 @@ class SocketManager {
   bool _isOn = false;
 
   ObserverList<Function> _listeners = ObserverList<Function>();
+  List<String> _buffer = [];
 
   factory SocketManager() {
     return _sockets;
@@ -47,6 +48,13 @@ class SocketManager {
           },
         },
       ));
+
+      if (_buffer.length > 0){
+        for (var msg in _buffer) {
+          send(msg);
+        }
+        _buffer = [];
+      }
 
 
       _channel.stream.listen(_onReceptionOfMessageFromServer,
@@ -86,6 +94,7 @@ class SocketManager {
           print("[SocketManager][Send] _channel sink null");  
         }
       }else{
+        _buffer.add(message);
         print("[SocketManager][Send] _channel null");  
       }
     } else {
