@@ -3,6 +3,7 @@ import 'package:konnect/database_helper.dart';
 import 'package:konnect/models/server.dart';
 import 'package:konnect/screens/mediaplayer/mediaplayer_min.dart';
 import 'package:konnect/screens/stats/stats_screen.dart';
+import 'package:konnect/screens/screenshot/screenshot_screen.dart';
 import 'package:konnect/socket_manager.dart';
 
 class DrawerItem {
@@ -98,6 +99,8 @@ class _MainScreenState extends State<MainScreen> {
     switch (pos) {
       case 0:
         return StatsScreen(parentScaffoldKey: _scaffoldKey);
+      case 2:
+        return ScreenShotScreen(parentScaffoldKey: _scaffoldKey);
       default:
         return Text("Error");
     }
